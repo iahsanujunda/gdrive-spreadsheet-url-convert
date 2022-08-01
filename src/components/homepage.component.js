@@ -4,10 +4,51 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 const HomePage = () => {
     const [url, setUrl] = useState('');
-    const [convertedUrl, setConvertedUrl] = useState('converted');
+    const [convertedUrl, setConvertedUrl] = useState('');
+    const [isConvert, setIsConvert] = useState(false)
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeUrl = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUrl(event.target.value);
+    };
+
+    async function copyTextToClipboard(text) {
+        if ('clipboard' in navigator) {
+            return await navigator.clipboard.writeText(text);
+        } else {
+            return document.execCommand('copy', true, text);
+        }
+    }
+
+    const handleCopyClick = () => {
+        // Asynchronously call copyTextToClipboard
+        copyTextToClipboard(convertedUrl)
+            .then(() => {
+                // If successful, update the isCopied state value
+                setConvertedUrl('Copied to clipboard!');
+                setTimeout(() => {
+                    setConvertedUrl(convertedUrl);
+                }, 2500);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
+    const handleReset = () => {
+        setUrl('')
+        setConvertedUrl('')
+        setIsConvert(false)
+    }
+
+    const handleConvertUrl = () => {
+        const found = url.match( /d\/([A-Za-z\d-]+)/ );
+
+        if ( found[1].length ) {
+            const new_url = `https://drive.google.com/uc?export=view&id=${found[1]}`;
+
+            setConvertedUrl(new_url);
+            setIsConvert(true);
+        }
     };
 
     return (
@@ -26,12 +67,24 @@ const HomePage = () => {
                         <Grid item xs={10}>
                             <TextField
                                 label="URL"
-                                fullWidth>{ url }</TextField>
+                                fullWidth
+                                value={ url }
+                                onChange={ handleChangeUrl }
+                            />
                         </Grid>
                         <Grid item alignItems="stretch" style={{ display: "flex" }} xs={2}>
-                            <Button color="primary" variant="contained" fullWidth>
-                                Convert
-                            </Button>
+                            {
+                                isConvert === false &&
+                                <Button color="primary" variant="contained" fullWidth onClick={ handleConvertUrl }>
+                                    Convert
+                                </Button>
+                            }
+                            {
+                                isConvert === true &&
+                                <Button color="error" variant="contained" fullWidth onClick={ handleReset }>
+                                    Reset
+                                </Button>
+                            }
                         </Grid>
                     </Grid>
                     <Grid container spacing={1} sx={{
@@ -41,11 +94,11 @@ const HomePage = () => {
                             <TextField
                                 label="Converted URL"
                                 fullWidth
-                                value={ url }
+                                value={ convertedUrl }
                             />
                         </Grid>
                         <Grid item alignItems="stretch" style={{ display: "flex" }} xs={2}>
-                            <Button color="primary" variant="contained" fullWidth>
+                            <Button color="primary" variant="contained" fullWidth onClick={ handleCopyClick }>
                                 <ContentCopyIcon />
                             </Button>
                         </Grid>
