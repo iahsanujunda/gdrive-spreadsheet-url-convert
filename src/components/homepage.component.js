@@ -95,6 +95,7 @@ const HomePage = () => {
                                 label="Converted URL"
                                 fullWidth
                                 value={ convertedUrl }
+                                disabled
                             />
                         </Grid>
                         <Grid item alignItems="stretch" style={{ display: "flex" }} xs={2}>
