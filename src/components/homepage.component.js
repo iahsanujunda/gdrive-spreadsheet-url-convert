@@ -41,7 +41,8 @@ const HomePage = () => {
     }
 
     const handleConvertUrl = () => {
-        const found = url.match( /d\/([A-Za-z\d-]+)/ );
+        const found = url.match( /d\/([A-Za-z_\d-]+)/ );
+        console.log(found)
 
         if ( found[1].length ) {
             const new_url = `https://drive.google.com/uc?export=view&id=${found[1]}`;
