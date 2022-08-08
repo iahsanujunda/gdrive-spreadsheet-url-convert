@@ -10,4 +10,4 @@ Convert image sharing URL from Google Drive into an embeddable format
 
 2. Paste over here, add sheet name if needed, then click `Convert`.
 
-![screenshot](https://drive.google.com/uc?export=view&id=1JZYloKzGYDGYd0ShP8dVAXeyb1J3PZ2l)
+![screenshot 2](https://drive.google.com/uc?export=view&id=1JZYloKzGYDGYd0ShP8dVAXeyb1J3PZ2l)
